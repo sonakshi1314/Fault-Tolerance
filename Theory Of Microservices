@@ -1,0 +1,86 @@
+What is Micro Services?
+Micro Service is Architectural way to design our application uniquely with several small modules developed individually, packaged individually, and deployed individually, in individual processes.
+
+What is Monolithic Architecture?
+Earlier we were using Monolithic Architecture
+Normally monolithic approach we are developing our every service individually and at end of developing we are packaging all services as single war file and deploying in Server
+
+Jar:- (Java Archieve) jar contain only .class
+war:- (Web Allplication Archieve) war contain html, js, css and .class also jsp and servlets pages
+
+Spring Boot Actuator--> is a sub-project of the Spring Boot Framework. It includes a number of additional features that help us to monitor and manage the Spring Boot application. It contains the actuator endpoints (the place where the resources live). We can use HTTP and JMX endpoints to manage and monitor the Spring Boot application. If we want to get production-ready features in an application, we should use the Spring Boot actuator.
+
+Fault Tolerance -->
+Hystrix --> It is a fault tolerance open source library developed by netflix through which we can stop
+deligation of failure from one   another . It internally follow circuit breaker design pattern (so wwe not need to write thread programming  and network programming in our code)
+
+
+What is Eureka Server-->
+Eureka Server is a service discovery for your microservices, where all client applications can register by themselves and other microservices look up the Eureka Server to get independent microservices to get the job complete.
+
+Eureka Server is also known as Discovery Server and it contains all the information about client microservices running on which IP address and port.
+
+Client-side service discovery allows services to find and communicate with each other without hard-coding the hostname and port. The only ‘fixed point’ in such an architecture is the service registry, with which each service has to register.
+
+One drawback is that all clients must implement a certain logic to interact with this fixed point. This assumes an additional network round trip before the actual request.
+
+With Netflix Eureka, each client can simultaneously act as a server to replicate its status to a connected peer. In other words, a client retrieves a list of all connected peers in a service registry and makes all further requests to other services through a load-balancing algorithm.
+
+
+fault tolerance -->
+fault--> There can a scinerio where one service can be down or it is taking more time to give reponse . It is a fault . As there is fault in one service we are not able to get the data of other services as well and user will get 500 server error , whixh is not user friendly .
+fault tolerance--> is the property that enables a sysytem to continue operating properly in thr event of the failure of some of its components.
+
+To solve this we use circuit breaker design pattern.
+
+RoundRibbon --> sequencial order (req 1 to server 1 , then re2 to server 2 , then again req 3 to server 1 and so on)
+Least connection --> let first 100 req will come to server1 , then next 100 to server2
+IP huss--> based on IP address we will redirect to server
+
+Spring cloud config --> server and client side configration in our distributed system , so that we can get one central place to manage our external properties of our application in all the environment.
+
+issue:
+  
+  Insurance 
+  Client-1   (/insurance/getAllPlans)                                                
+ 
+  
+  Insurance                              Insurance provider(https://localhost:8080/insurance/getAllPlans)
+  Client-2  (/insurance/getAllPlans)
+  
+  Insurance 
+  Client-3   (/insurance/getAllPlans)
+  
+  
+  Let suppose in future insurance provider end point get chnaged from /getAllPlans to /updatedPlans . So as all the clients are tightly bounded to Insurance provider , we have to change the endpoints of all the clients and hence we have to restart and redelpoy again and again .
+  
+  So , in order to optimize this the concept of spring cloud config server comes into picture.
+  So wwe will eclare this endpoint globally so that if we are changing the endpoint , it will not impact to the dependent micro services .
+  
+  
+  Insurance 
+  Client-1 
+             
+  
+  Insurance               Insurance Config Server--> GitHUb --> Insurance Provider
+  Client-2
+  
+  
+  Insurance 
+  Client-3
+  
+  If now there is any url change in Insurance Provider , that will get updated in GitHub and all the clients will take the url from github by config server .So config server maintains the loosely coupleness between all the clients and the provider .
+  
+  
+  
+ ??????? Actuator --> we are not directly invoking the provider from client , we are just invoking the config server and config server will hit the git so this default endpoint mapping will be done by actuator
+ ??????? @Lazy???
+  
+  
+	
+	If we change the url in microservice then we have to change that in github , but to reflect that changes in client we have to add @RefreshScope annotation
+	
+	
+	
+Zipkin Server --> tracing purpose 	
+	
